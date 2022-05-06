@@ -39,29 +39,31 @@ Example:
 
 ### Template IDs
 
-In your demo org, you'll need to create a set of RF and WAN templates and gather their IDs. `sites.json` has the following IDs in the site settings:
+In your demo org, you'll need to create a set of wireless, wired, and WAN templates and gather their IDs. Each site in `sites.json` will have a `type` setting, `kiosk`, `smallBranch`, `largeBranch`, or `dataCenter`.
 
+Create a `templates.json` file with the relevant template IDs for your org. Example:
 ```
 {
   "kiosk" : {
     "rftemplate_id": "b38c87aa-ddec-4b42-b30c-1eac65722489",
     "gatewaytemplate_id": "f1a9b9b8-2639-4911-9b5e-fb1dadfda66a"
   },
-  "small-branch" : {
+  "smallBranch" : {
     "rftemplate_id": "ed6d6a6c-4189-41b2-99ba-157b0bb567d5",
-    "gatewaytemplate_id": "6a55c651-9712-4235-9d5c-94a70e717db9"
+    "gatewaytemplate_id": "6a55c651-9712-4235-9d5c-94a70e717db9",
+    "networktemplate_id": "fc3ed6f8-0ea6-408c-b2a4-ccbfc017b5a7"
   },
-  "large-branch": {
+  "largeBranch": {
     "rftemplate_id": "96275985-b16f-4072-9803-b085b0a0bf74",
-    "gatewaytemplate_id": "da283cdb-732d-4c56-a2ea-fe031fc2db5f"
+    "gatewaytemplate_id": "da283cdb-732d-4c56-a2ea-fe031fc2db5f",
+    "networktemplate_id": "230fcd30-f0b0-4114-82a9-6e54f5c489a1"
   },
-  "datacenter": {
-    "gatewaytemplate_id": "bcddf1fd-3c42-4ac0-98c3-11dda6116664"
+  "dataCenter": {
+    "gatewaytemplate_id": "bcddf1fd-3c42-4ac0-98c3-11dda6116664",
+    "networktemplate_id": "56a3434b-8666-4506-88f7-085730004c71"
   }
 }
 ```
-
-If using a different org, with different template IDs, you will need to find/replace these to match your target org.
 
 ## Usage
 

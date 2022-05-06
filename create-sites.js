@@ -5,6 +5,7 @@ const rest = require('axios')
 // import token and org to import to
 const apiToken = require('./token.json')
 const orgId = require('./orgs.json').importOrg
+const templates = require('./templates.json')
 const siteData = require('./sites.json')
 
 // variables
@@ -39,9 +40,28 @@ async function begin(){
 
   // iterate through sites and create them
   for (const site of siteData) {
+
+    // swap tokens part way through the job
     if (siteCreateAttempts === 3000) {
       restReqConfig = { headers: { Authorization: `Token ${apiToken.token2}` }}
     }
+
+    let siteConfig = {
+      name: site.name,
+      country_code: site.country_code,
+      address: site.address,
+      latlng: site.latlng,
+      timezone: site.timezone
+    }
+
+    // match type name to template
+    if (templates[site.type]) {
+      siteConfig = {
+        ...siteConfig,
+        ...templates[site.type]
+      }
+    }
+    
     await createSite(site)
   }
 

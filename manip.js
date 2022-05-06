@@ -4,25 +4,7 @@ const fs = require('fs')
 var inputData = require('./sites.json')
 const outputData = './sites-updated.json'
 
-const templateIds = {
-  "kiosk" : {
-    "rf": "b38c87aa-ddec-4b42-b30c-1eac65722489",
-    "wan": "f1a9b9b8-2639-4911-9b5e-fb1dadfda66a"
-  },
-  "small-branch" : {
-    "rf": "ed6d6a6c-4189-41b2-99ba-157b0bb567d5",
-    "wan": "6a55c651-9712-4235-9d5c-94a70e717db9"
-  },
-  "large-branch": {
-    "rf": "96275985-b16f-4072-9803-b085b0a0bf74",
-    "wan": "da283cdb-732d-4c56-a2ea-fe031fc2db5f"
-  },
-  "datacenter": {
-    "wan": "bcddf1fd-3c42-4ac0-98c3-11dda6116664"
-  }
-}
-
-
+/*
 var datacenterCount = 6
 var largeCount = 100
 var smallCount = 3000
@@ -93,6 +75,37 @@ for (const key of kioskKeys) {
 
 console.log(inputData)
 
+*/
+
+let manipData = inputData.map((site)=>{
+
+  let pattern = /(?<kiosk>Kiosk)|(?<smallBranch>Small Branch)|(?<largeBranch>Large Branch)|(?<dataCenter>Data Center)$/
+  let results = site.name.match(pattern).groups
+  let manipData = {
+    name: site.name,
+    country_code: site.country_code,
+    address: site.address,
+    latlng: site.latlng,
+    timezone: site.timezone
+  }
+
+  if (results.dataCenter) {
+    manipData.type = "dataCenter"
+  } else if (results.largeBranch) {
+    manipData.type = "largeBranch"
+  } else if (results.smallBranch) {
+    manipData.type = "smallBranch"
+  } else if (results.kiosk) {
+    manipData.type = "kiosk"
+  } else {
+    console.log(site)
+  }
+
+  return manipData
+})
+
+//console.log(manipData)
+
 function writeToFile(path, contentString){
   return new Promise((resolve, reject) => {
     fs.writeFile(path, contentString, {mode: 0o600,encoding: 'utf8'}, (err) => {
@@ -103,7 +116,7 @@ function writeToFile(path, contentString){
 }
 
 async function writeData(){
-  await writeToFile(outputData, JSON.stringify(inputData, null, 2))
+  await writeToFile(outputData, JSON.stringify(manipData, null, 2))
 }
 
 writeData()
