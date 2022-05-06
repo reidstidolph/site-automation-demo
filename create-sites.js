@@ -62,7 +62,7 @@ async function begin(){
       }
     }
     
-    await createSite(site)
+    await createSite(siteConfig)
   }
 
   const end = new Date()
